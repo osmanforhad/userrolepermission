@@ -7,3 +7,11 @@
         </div>
     </div>
 @endif
+
+@if (Session::has('success'))
+    <div class="alert alert-success">
+        <div>
+                <li>{{ Session::get('success') }}</li>
+        </div>
+    </div>
+@endif
