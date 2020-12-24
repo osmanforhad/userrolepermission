@@ -61,12 +61,11 @@
                                                     <td>{{$user->name}}</td>
                                                     <td>{{$user->email}}</td>
                                                     <td>
-                                                        {{-- @foreach ($user->permissions as $perm)
+                                                         @foreach ($user->roles as $role)
                                                             <span class="badage badge-info mr-1">
-                                                                {{$perm->name}}
+                                                                {{$role->name}}
                                                             </span>
-                                                        @endforeach --}}
-                                                    </td>
+                                                        @endforeach
                                                     <td>
                                                         <a class="btn btn-success text-white" href="{{route('admin.users.edit', $user->id)}}">Edit</a>
 
