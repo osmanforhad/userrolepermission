@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\User;
+use Hash;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
-class RolesController extends Controller
+class UsersController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,9 +17,9 @@ class RolesController extends Controller
      */
     public function index()
     {
-        $roles = Role::all();
+        $users = User::all();
 
-        return view('backend.pages.roles.index', compact('roles'));
+        return view('backend.pages.users.index', compact('users'));
     } //end of the index method
 
     /**
@@ -29,11 +29,10 @@ class RolesController extends Controller
      */
     public function create()
     {
-        $all_permissions = Permission::all();
+        $roles = Role::all();
 
-        $permission_groups = User::getpermissionsGroups();
         //dd($permission_groups);
-        return view('backend.pages.roles.create', compact('all_permissions', 'permission_groups'));
+        return view('backend.pages.users.create', compact('roles'));
     } //end of the create method
 
     /**
@@ -47,22 +46,26 @@ class RolesController extends Controller
 
         //data validation
         $request->validate([
-            'name' => 'required|max:100|unique:roles',
-        ], [
-            'name.required' => 'Please give a role name',
+            'name' => 'required|max:50',
+            'email' => 'required|max:100|email|unique:users',
+            'password' => 'required|min:8|confirmed',
         ]);
 
-        //data processing
-        $role = Role::create(['name' => $request->name]);
+        //Create New User
+        $user = new User();
 
-        // $role = DB::table('roles')->where('name', $request->name)->first();
-        $permissions = $request->input('permissions');
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->save();
 
-        if (!empty($permissions)) {
-            $role->syncPermissions($permissions);
+        if ($request->roles) {
+            $user->assignRole($request->roles);
+
         }
-        session()->flash('success', 'Role has been created !!');
-        return back();
+
+        session()->flash('success', 'User has been created !!');
+        return redirect()->route('admin.users.index');
 
     } //end of the store method
 
@@ -85,13 +88,12 @@ class RolesController extends Controller
      */
     public function edit($id)
     {
-        $role = Role::findById($id);
+        $user = User::findById($id);
 
-        $all_permissions = Permission::all();
+        $roles = Role::all();
 
-        $permission_groups = User::getpermissionsGroups();
 //dd($permission_groups);
-        return view('backend.pages.roles.edit', compact('role', 'all_permissions', 'permission_groups'));
+        return view('backend.pages.users.edit', compact('user', 'roles'));
 
     } //end of the edit method
 
@@ -106,22 +108,22 @@ class RolesController extends Controller
     {
         //data validation
         $request->validate([
-            'name' => 'required|max:100|unique:roles,name,' . $id,
+            'name' => 'required|max:100|unique:users,name,' . $id,
         ], [
-            'name.required' => 'Please give a role name',
+            'name.required' => 'Please give a user name',
         ]);
 
-        $role = Role::findById($id);
+        $users = User::findById($id);
 
         $permissions = $request->input('permissions');
 
         if (!empty($permissions)) {
-            $role->name = $request->name;
-            $role->save();
-            $role->syncPermissions($permissions);
+            $users->name = $request->name;
+            $users->save();
+            $users->syncPermissions($permissions);
         }
 
-        session()->flash('success', 'Role has been updated !!');
+        session()->flash('success', 'User has been updated !!');
         return back();
 
     } //end of the update method
@@ -135,13 +137,13 @@ class RolesController extends Controller
     public function destroy($id)
     {
 
-        $role = Role::findById($id);
+        $user = User::findById($id);
 
-        if (!is_null($role)) {
-            $role->delete();
+        if (!is_null($user)) {
+            $user->delete();
         }
 
-        session()->flash('success', 'Role has been deleted !!');
+        session()->flash('success', 'User has been deleted !!');
         return back();
 
     } //end of the destroy method
