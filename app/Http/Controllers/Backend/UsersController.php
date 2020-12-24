@@ -88,7 +88,7 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        $user = User::findById($id);
+        $user = User::find($id);
 
         $roles = Role::all();
 
@@ -106,21 +106,30 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+        //update specific User
+        $user = User::find($id);
+
         //data validation
         $request->validate([
-            'name' => 'required|max:100|unique:users,name,' . $id,
-        ], [
-            'name.required' => 'Please give a user name',
+            'name' => 'required|max:50',
+            'email' => 'required|max:100|email|unique:users,email,' . $id,
+            'password' => 'nullable|min:8|confirmed',
         ]);
 
-        $users = User::findById($id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        if ($request->password) {
+            $user->password = Hash::make($request->password);
+        }
 
-        $permissions = $request->input('permissions');
+        $user->save();
 
-        if (!empty($permissions)) {
-            $users->name = $request->name;
-            $users->save();
-            $users->syncPermissions($permissions);
+        $user->roles()->detach();
+
+        if ($request->roles) {
+            $user->assignRole($request->roles);
+
         }
 
         session()->flash('success', 'User has been updated !!');
@@ -137,7 +146,7 @@ class UsersController extends Controller
     public function destroy($id)
     {
 
-        $user = User::findById($id);
+        $user = User::find($id);
 
         if (!is_null($user)) {
             $user->delete();
