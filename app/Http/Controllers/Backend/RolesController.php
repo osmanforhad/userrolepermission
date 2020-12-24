@@ -116,6 +116,8 @@ class RolesController extends Controller
         $permissions = $request->input('permissions');
 
         if (!empty($permissions)) {
+            $role->name = $request->name;
+            $role->save();
             $role->syncPermissions($permissions);
         }
 
