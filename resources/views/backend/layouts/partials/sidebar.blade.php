@@ -16,7 +16,7 @@
                                 </ul>
                             </li>
                             <li>
-                                <a href="javascript:void(0)" aria-expanded="true"><i class="ti-layout-sidebar-left"></i><span>
+                                <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-tasks"></i><span>
                                         Roles & Permissions
                                     </span></a>
                                 <ul class="collapse {{Route::is('admin.roles.create') || Route::is('admin.roles.index') || Route::is('admin.roles.edit') || Route::is('admin.roles.show') ? 'in' : ''}}">
@@ -26,7 +26,7 @@
                                 </ul>
                             </li>
                               <li>
-                                <a href="javascript:void(0)" aria-expanded="true"><i class="ti-layout-sidebar-left"></i><span>
+                                <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-user"></i><span>
                                         Users
                                     </span></a>
                                 <ul class="collapse {{Route::is('admin.users.create') || Route::is('admin.users.index') || Route::is('admin.users.edit') || Route::is('admin.users.show') ? 'in' : ''}}">
