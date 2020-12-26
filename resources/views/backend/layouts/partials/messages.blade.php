@@ -15,3 +15,11 @@
         </div>
     </div>
 @endif
+
+@if (Session::has('error'))
+    <div class="alert alert-danger">
+        <div>
+                <li>{{ Session::get('error') }}</li>
+        </div>
+    </div>
+@endif

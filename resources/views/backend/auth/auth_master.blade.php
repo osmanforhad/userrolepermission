@@ -4,9 +4,10 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>@yield('title', 'Laravel Role Admin')</title>
+    <title>@yield('auth_title', 'Authentication - Admin Panel')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-   @include('backend.layouts.partials.styles')
+    <link rel="shortcut icon" type="image/png" href="assets/images/icon/favicon.ico">
+      @include('backend.layouts.partials.styles')
    @yield('styles')
 </head>
 
@@ -19,29 +20,11 @@
         <div class="loader"></div>
     </div>
     <!-- preloader area end -->
-    <!-- page container area start -->
-    <div class="page-container">
-
-      @include('backend.layouts.partials.sidebar')
-
-        <!-- main content area start -->
-        <div class="main-content">
-
-          @include('backend.layouts.partials.header')
-
-           @yield('admin-content')
-        </div>
-        <!-- main content area end -->
-
-       @include('backend.layouts.partials.footer')
-    </div>
-    <!-- page container area end -->
-
-   @include('backend.layouts.partials.offsets')
+    @yield('auth-content')
 
     @include('backend.layouts.partials.scripts')
 
-    @yield('scripts')   
+    @yield('scripts')
 </body>
 
 </html>
