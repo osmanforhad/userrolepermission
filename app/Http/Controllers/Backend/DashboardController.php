@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class DashboardController extends Controller
 {
@@ -26,7 +29,11 @@ class DashboardController extends Controller
 
         }
 
-        return view('backend.pages.dashboard.index');
+        $total_roles = count(Role::select('id')->get());
+        $total_admins = count(Admin::select('id')->get());
+        $total_permissions = count(Permission::select('id')->get());
+
+        return view('backend.pages.dashboard.index', compact('total_roles', 'total_admins', 'total_permissions'));
 
     } //end of the index method
 
