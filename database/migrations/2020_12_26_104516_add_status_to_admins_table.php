@@ -14,7 +14,7 @@ class AddStatusToAdminsTable extends Migration
     public function up()
     {
         Schema::table('admins', function (Blueprint $table) {
-            $table->string('status')->after('username');
+            $table->string('status')->after('username')->nullable();;
         });
     }
 
