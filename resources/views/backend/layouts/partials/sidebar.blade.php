@@ -5,7 +5,9 @@
         <div class="sidebar-menu">
             <div class="sidebar-header">
                 <div class="logo">
-                    <a href="{{route('admin.dashboard')}}"><img src="{{asset('backend/assets/images/icon/logo.png')}}" alt="logo"></a>
+                    <a href="{{route('admin.dashboard')}}">
+                   <h4 class="text-white">User Role Permission</h4>
+                    </a>
                 </div>
             </div>
             <div class="main-menu">
